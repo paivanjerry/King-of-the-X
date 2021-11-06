@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>King of the Kampus tehtävät</title>
+
+  <script src="/__/firebase/6.6.1/firebase-app.js"></script>
+  <script src="/__/firebase/6.6.1/firebase-database.js"></script>
+  <script src="config.js"></script>
+  <script>
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    if(!contestRunning){
+      window.location.replace("/")
+    }
+  </script>
+
+</head>
+
+<body style="width: 100%; max-width: 600px; margin: auto;">
+  <!-- HIIOHOI JA HALOJATA PÄIVÄÄ! -->
+  <div>
+    <h1>King of the Kampus tehätiävät</h1>
+    <ul>
+      <li>Kisailuaika: joskus</li>
+      <li>Vähintään 2 tiimiläistä paikalla suorituksissa</li>
+      <li>Ei saa jakautua pienempiin tiimeihin suorittamaan tehtäviä</li>
+      <li>Miniramppitemput voi tehdä myös yksittäisessä kaaressa</li>
+      <li>Tähti pistesarakkeessa tarkoittaa, että vain yksi tiimi saa tehtävästä pisteet</li>
+      <li>Jos tempussa ei ole mainittu stancea, sen voi tehdä mistä vain stancesta. Pätee myös manuaaleihin.</li>
+      <li>Tehtävät videoidaan ja klipin nimeksi tehtävän numero(t). Palautus jokusen viikon kuluessa kisasta</li>
+      <li>Editti gaalaan (syssymmällä)</li>
+    </ul>
+
+    <p>Klikkaa listan riviä merkatakses sen tehdyks. Vain muistiinpanotarkotuksiin.</p>
+    <p>Arvioidut pisteet: <b id="points"></b></p>
+
+
+    <table id="table" style="width:100%; text-align: left;">
+      <tr>
+        <th>Num</th>
+        <th>Lisäysaika</th>
+        <th>Tehtävä</th>
+        <th>Pts</th>
+        <th>nimi</th>
+      </tr>
+    </table>
+
+
+  </div>
+
+
+  <script>
+
+    const dbRef = firebase.database().ref();
+    dbRef.child("ideat").once("value",snapshot =>{
+
+      let table = document.getElementById("table")
+      let data = snapshot.val(); 
+      let counter = 0;
+      getPoints(data)
+      for (const [key, value] of Object.entries(data)) {
+        
+        counter++;
+
+        let tr = document.createElement("tr");
+        if(localStorage.getItem(key) == "true"){
+          tr.style.backgroundColor = "#cfffcf7a"
+        }
+        else{
+          tr.style.backgroundColor = "#fbe2e47a"
+        }
+        tr.addEventListener("click", (e) => {
+          let setTrue = !(localStorage.getItem(key) == "true")
+          localStorage.setItem(key, setTrue)
+          if(setTrue){
+            tr.style.backgroundColor = "#cfffcf7a"
+          }
+          else{
+            tr.style.backgroundColor = "#fbe2e47a"
+          }
+          getPoints(data)
+        })
+        tr.style.outline = "1px solid black"
+        tr.style.padding = "5px"
+        let td1 = document.createElement("td")
+        let td2 = document.createElement("td")
+        let td3 = document.createElement("td")
+        let td4 = document.createElement("td")
+        let td5 = document.createElement("td")
+        td1.innerText = counter
+        td1.style.maxWidth = "2%"
+        td2.innerText = key
+        td3.innerText = value["teht"]
+        td4.innerText = value["pts"]
+        td5.innerText = value["nickStr"]
+        tr.appendChild(td1)
+        tr.appendChild(td2)
+        tr.appendChild(td3)
+        tr.appendChild(td4)
+        tr.appendChild(td5)
+        table.appendChild(tr)
+        
+      }
+    })
+
+    function getPoints(data){
+      let totalPts = 0
+      for (const [key, value] of Object.entries(data)) {
+        if(localStorage.getItem(key) == "true"){
+          let pts = parseInt(value["pts"])
+          if(!isNaN(pts)){
+            totalPts += pts
+          }
+        }
+      }
+      document.getElementById("points").innerText = totalPts
+    }
+
+  </script>
+
+  <style>
+    td{padding: 10px 5px;}
+  </style>
+
+</body>
+
+</html>

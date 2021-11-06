@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>King of the Kampus tehtäväideointi</title>
+
+  <script src="/__/firebase/6.6.1/firebase-app.js"></script>
+  <script src="/__/firebase/6.6.1/firebase-database.js"></script>
+  <script src="config.js"></script>
+  <script>
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  <script src="./formPage.js"></script>
+  <script>
+    if(!receivingIdeas){
+      window.location.replace("/")
+    }
+  </script>
+
+</head>
+
+<body>
+  <h1>Suljettu, ens kerralla uusiks:)</h1>
+  <!-- HIIOHOI JA HALOJATA PÄIVÄÄ! -->
+  
+  <div id="reward" style="display: none; margin:auto">
+    <h2>Kiitos ideasta, ota palkinto!</h2>
+    <p>Palkinnoksi saat nauttia alpakan kuvasta hetken ennen takaisin lomakesivulle ohjausta</p>
+    <img id="alpaca" style="width: 90%;"
+      src="https://i.pinimg.com/originals/8e/5c/65/8e5c6588ae3486d31d4b029e51d7b8d6.jpg" />
+  </div>
+  <div id="form">
+    <h1>King of the Kampus tehtävien ideointilomake kikkare</h1>
+    <h3>Täräytä tehtäväidea alla olevaan lomakkeeseen</h3>
+    <p>Pisteet ja nimimerkki on vapaaehtoisia kenttiä. Pistemäärä saatetaan muuttaa, mutta nimimerkki tulee
+      mahdollisesti sellaisenaan tehtävälistaan (maine ja kunnia!).</p>
+    <p>Tehtävät voivat myös liittyä etäisesti rullalautailuun</p>
+
+    <ul> <b>Esimerkkinä muutama tehtävä aiemmilta vuosilta</b>
+      <li>Lahjoita juopolle alkoholitonta olutta 20p</li>
+      <li>syö kotitehtävät 30p</li>
+      <li>Hardflip housut nilkoissa 40p</li>
+      <li>Sytytä rööki liekkipierulla 50p</li>
+    </ul>
+
+    <p>*Tehtävä:</p>
+    <textarea id="teht" name="textarea"
+      style="width:70%;height:150px; min-width: 150px; max-width: 90%; min-height: 100px; max-height: 400px;"></textarea>
+    <p>Pisteet (0-100):</p>
+    <input type="text" id="pts" placeholder="Pisteet">
+    <p>Nimimerkki:</p>
+    <input type="text" id="nick" placeholder="Nimimerkki">
+
+    <button style="display: block; margin-top: 40px; height: 100px; width: 200px; background-color:lightgreen"
+      onclick="checkForm()">Send it!</button>
+  </div>
+
+</body>
+
+</html>
